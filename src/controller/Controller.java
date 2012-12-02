@@ -4,7 +4,12 @@ import knowledgesource.*;
 import blackboard.*;
 import java.util.ArrayList;
 
-
+/**
+ * Copyright (C), 2001-2012, Aha
+ * <br/>Date:2012-12-01 
+ * @author  Aha tzl77258511@gmail.com
+ * @version  1.0
+ */
 public class Controller {
 	//single instance
 	private static Controller singleInstance;
