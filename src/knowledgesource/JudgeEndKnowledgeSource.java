@@ -46,8 +46,10 @@ public class JudgeEndKnowledgeSource implements IKnowledgeSource{
 	@Override
 	public boolean operation(Object o) {
 		// TODO Auto-generated method stub
+		Data data = (Data)o;
+		data.state = Data.FIN_STATE;
 		Counter.increaseOne();
-		bb.addRemoveBufferData((Data)o);
+		//bb.enableGen();
 		return true;
 	}
 

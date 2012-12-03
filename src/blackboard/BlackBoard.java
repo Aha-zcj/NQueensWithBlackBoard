@@ -2,6 +2,7 @@ package blackboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Stack;
 
 import knowledgesource.IKnowledgeSource;
 import controller.Controller;
@@ -23,22 +24,16 @@ public class BlackBoard {
 		}
 		else{
 			singleInstance.getDataSource().clear();
-			singleInstance.getBufferDataSource().clear();
-			singleInstance.getBufferRemoveData().clear();
 			singleInstance.setController(null);
 			return singleInstance;
 		}
 	}
 	
-	private ArrayList<Data> dataSource;
-	private ArrayList<Data> bufferDataSource;
-	private ArrayList<Data> bufferRemoveData;
+	private Stack<Data> dataSource;
 	private Controller controller;
 	
 	public BlackBoard(){
-		this.dataSource = new ArrayList<Data>();
-		this.bufferDataSource = new ArrayList<Data>();
-		this.bufferRemoveData = new ArrayList<Data>();
+		this.dataSource = new Stack<Data>();
 	}
 	
 	public boolean registKS(IKnowledgeSource ks){
@@ -46,33 +41,8 @@ public class BlackBoard {
 	}
 	
 	public boolean addData(Data d){
-		return dataSource.add(d);
-	}
-	
-	public boolean removeData(Data d){
-		return dataSource.remove(d);
-	}
-	
-	public boolean addBufferData(Data d){
-		return bufferDataSource.add(d);
-	}
-	
-	public boolean addRemoveBufferData(Data d){
-		return bufferRemoveData.add(d);
-	}
-	
-	public void flushBufferIntoDataSource(){
-		dataSource.addAll(bufferDataSource);
-		bufferDataSource.clear();
-	}
-	
-	public void removeDataInRemoveBuffer(){
-		dataSource.removeAll(bufferRemoveData);
-		bufferRemoveData.clear();
-	}
-	
-	public boolean init(Data d){
-		return dataSource.add(d);
+		dataSource.push(d);
+		return true;
 	}
 	
 	public boolean registController(Controller c){
@@ -93,11 +63,10 @@ public class BlackBoard {
 		}
 		else{
 			while(!dataSource.isEmpty()){
-				for(Data tmp:dataSource){
+				Data tmp = dataSource.pop();
+				while(tmp.state != Data.FIN_STATE){
 					controller.applyKS(tmp);
 				}
-				removeDataInRemoveBuffer();
-				flushBufferIntoDataSource();
 			}
 			return true;
 		}
@@ -111,28 +80,24 @@ public class BlackBoard {
 		this.controller = controller;
 	}
 
-	public ArrayList<Data> getDataSource() {
+	public Stack<Data> getDataSource() {
 		return dataSource;
 	}
 
-	public void setDataSource(ArrayList<Data> dataSource) {
+	public void setDataSource(Stack<Data> dataSource) {
 		this.dataSource = dataSource;
 	}
-
-	public ArrayList<Data> getBufferDataSource() {
-		return bufferDataSource;
-	}
-
-	public void setBufferDataSource(ArrayList<Data> bufferDataSource) {
-		this.bufferDataSource = bufferDataSource;
-	}
-
-	public ArrayList<Data> getBufferRemoveData() {
-		return bufferRemoveData;
-	}
-
-	public void setBufferRemoveData(ArrayList<Data> bufferRemoveData) {
-		this.bufferRemoveData = bufferRemoveData;
-	}
 	
+	
+//	public void enableGen(){
+//		controller.enableGen();
+//	}
+//	
+//	public void disableGen(){
+//		controller.disableGen();
+//	}
+//	
+//	public boolean isEnableGen(){
+//		return Controller.getState() == Controller.ENABLE_GEN;
+//	}
 }

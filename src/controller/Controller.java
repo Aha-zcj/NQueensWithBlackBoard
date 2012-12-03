@@ -11,6 +11,10 @@ import java.util.ArrayList;
  * @version  1.0
  */
 public class Controller {
+//	public final static int ENABLE_GEN = 0x00;
+//	public final static int DISABLE_GEN = 0x01;
+//	private static int state = DISABLE_GEN;
+	
 	//single instance
 	private static Controller singleInstance;
 	public static Controller getSingleInstance(){
@@ -66,4 +70,22 @@ public class Controller {
 	public void setKnowledgeSources(ArrayList<IKnowledgeSource> knowledgeSources) {
 		this.knowledgeSources = knowledgeSources;
 	}
+	
+//	public void enableGen(){
+//		setState(ENABLE_GEN);
+//	}
+//	
+//	public void disableGen(){
+//		setState(DISABLE_GEN);
+//	}
+//
+//	public static int getState() {
+//		return state;
+//	}
+//
+//	public static void setState(int state) {
+//		Controller.state = state;
+//	}
+
+	
 }

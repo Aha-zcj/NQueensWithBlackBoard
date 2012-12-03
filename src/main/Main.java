@@ -26,12 +26,13 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("N皇后问题[黑板风格](只能处理1-64皇后,输入-1结束程序),请输入N:");
 		int n = -1;
 	    long tm;
 	    long upperlim;
 	    Scanner scanner = new Scanner(System.in);
 	    while (true) {
-	        System.out.println("N皇后问题(只能处理1-64皇后,输入-1结束程序),请输入N:");
+	    	System.out.println("请输入N:");
 	        upperlim = 1;
 	        Counter.reset();
 	        n = scanner.nextInt();
@@ -51,7 +52,7 @@ public class Main {
 	        	System.out.println(" ֻ只能计算1-64之间");
 	            return ;
 	        }
-	        System.out.println(n + " 皇后");
+	        System.out.println("正在计算...");
 	        
 	        // N个皇后只需N位存储，N列中某列有皇后则对应bit置1。
 	        upperlim = (upperlim << n) - 1;
@@ -71,7 +72,7 @@ public class Main {
 	        initData.ld = 0;
 	        initData.copyRow = 0;
 	        initData.state = Data.OF_STATE;
-	        blackBoard.init(initData);
+	        blackBoard.addData(initData);
 	        blackBoard.start();
 	        
 	        

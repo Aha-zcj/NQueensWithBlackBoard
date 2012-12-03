@@ -1,4 +1,5 @@
 package knowledgesource;
+import controller.Controller;
 import datastruct.Data;
 import blackboard.BlackBoard;
 
@@ -38,6 +39,18 @@ public class ProductKnowledgeSource implements IKnowledgeSource{
 	public boolean isNeeded(Object o) {
 		// TODO Auto-generated method stub
 		Data d = (Data)o;
+//		switch(d.state){
+//		case Data.OF_STATE:
+//			return true;
+//		case Data.GEN_STATE:
+//			if(bb.isEnableGen()){
+//				return true;
+//			}
+//			else{
+//				return false;
+//			}
+//		}
+//		return false;
 		if(d.state == Data.OF_STATE){
 			return true;
 		}
@@ -60,29 +73,27 @@ public class ProductKnowledgeSource implements IKnowledgeSource{
             // 也就是取得可以放皇后的最右边的列  
             long p = pos & -pos;                                                
   
-            // 将row可用的最右边为1的bit清零  
-            // 也就是为获取下一次的最右可用列使用做准备，  
-            // 程序将来会回溯到这个位置继续试探  
-            data.copyRow += p;
             
-            // row + p，将当前列置1，表示记录这次皇后放置的列。  
-            // (ld + p) << 1，标记当前皇后左边相邻的列不允许下一个皇后放置。  
-            // (ld + p) >> 1，标记当前皇后右边相邻的列不允许下一个皇后放置。  
-            // 此处的移位操作实际上是记录对角线上的限制，只是因为问题都化归  
-            // 到一行网格上来解决，所以表示为列的限制就可以了。显然，随着移位  
-            // 在每次选择列之前进行，原来N×N网格中某个已放置的皇后针对其对角线  
-            // 上产生的限制都被记录下来了
+            
             Data newData = new Data();
-            newData.row = data.row + p;
-            newData.ld = data.ld + p;
-            newData.rd = data.rd + p;
-            newData.copyRow = newData.row;
-            newData.state = Data.RAW_STATE;
-            return bb.addBufferData(newData);
+            newData.row = data.row;
+            newData.ld = data.ld;
+            newData.rd = data.rd;
+            newData.copyRow = data.copyRow + p;
+            newData.state = Data.OF_STATE;
+            
+            data.row += p;
+            data.ld += p;
+            data.rd += p;
+            data.copyRow = data.row;
+            data.state = Data.RAW_STATE;
+            
+            return bb.addData(newData);
         }
         else{
-        	return bb.addRemoveBufferData(data);
+        	data.state = Data.FIN_STATE;
         }
+        return true;
 	}
 
 	@Override
